@@ -44,7 +44,7 @@ defmodule Ex03 do
         5	does it produce the correct results on any valid data
 
       Tested
-      if tests are provided as part of the assignment: 	
+      if tests are provided as part of the assignment:
         5	all pass
 
       Aesthetics
@@ -59,9 +59,33 @@ defmodule Ex03 do
 
   """
 
-  def pmap(collection, process_count, function) do
-    « your code here »
+  def pmap collection, process_count, function do
+
+    num_items = items_per_list(collection, process_count)
+
+    collection
+    |> Enum.chunk(num_items, num_items, [])
+    |> parallelize(function)
+
   end
+
+  defp parallelize list, function do
+
+    #Make a list of Task pids, where each Task is running map on a sublist
+    Enum.map(list, &(Task.async(fn -> Enum.map(&1, function) end)))
+
+    #Wait for each Task to finish and concatenate the results
+    |> Enum.map(&(Task.await(&1)))
+    |> Enum.concat
+
+  end
+
+  defp items_per_list collection, process_count do
+    Enum.count(collection) /  process_count
+    |> Float.ceil
+    |> round
+  end
+
 
 end
 
@@ -96,5 +120,5 @@ defmodule TestEx03 do
     assert result2 == result1
     assert time2 < time1 * 0.8
   end
-  
+
 end
