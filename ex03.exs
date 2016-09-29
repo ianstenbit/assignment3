@@ -65,21 +65,12 @@ defmodule Ex03 do
 
     collection
     |> Enum.chunk(num_items, num_items, [])
-    |> parallelize(function)
-
-  end
-
-  defp parallelize list, function do
-
-    #Make a list of Task pids, where each Task is running map on a sublist
-    Enum.map(list, &(Task.async(fn -> Enum.map(&1, function) end)))
-
-    #Wait for each Task to finish and concatenate the results
+    |> Enum.map(&(Task.async(fn -> Enum.map(&1, function) end)))
     |> Enum.map(&(Task.await(&1)))
     |> Enum.concat
 
   end
-
+  
   defp items_per_list collection, process_count do
     Enum.count(collection) /  process_count
     |> Float.ceil
