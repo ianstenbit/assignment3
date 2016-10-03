@@ -1,6 +1,8 @@
 
 defmodule Ex02 do
 
+  @me __MODULE__
+
   def new_counter value do
     {:ok, pid} = Agent.start(fn -> value end)
     pid
@@ -11,11 +13,11 @@ defmodule Ex02 do
   end
 
   def new_global_counter do
-    Agent.start(fn -> 0 end, name: __MODULE__)
+    Agent.start(fn -> 0 end, name: @me)
   end
 
   def global_next_value do
-    Agent.get_and_update(__MODULE__, &{&1, (&1+1)})
+    Agent.get_and_update(@me, &{&1, (&1+1)})
   end
 
 end

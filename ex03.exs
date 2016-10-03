@@ -70,7 +70,7 @@ defmodule Ex03 do
     |> Enum.concat
 
   end
-  
+
   defp items_per_list collection, process_count do
     Enum.count(collection) /  process_count
     |> Float.ceil
