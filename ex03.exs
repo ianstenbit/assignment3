@@ -61,7 +61,7 @@ defmodule Ex03 do
 
   def pmap collection, process_count, function do
 
-    num_items = items_per_list(collection, process_count)
+    num_items = Enum.count(collection) |> div(process_count)
 
     collection
     |> Enum.chunk(num_items, num_items, [])
@@ -70,13 +70,6 @@ defmodule Ex03 do
     |> Enum.concat
 
   end
-
-  defp items_per_list collection, process_count do
-    Enum.count(collection) /  process_count
-    |> Float.ceil
-    |> round
-  end
-
 
 end
 
