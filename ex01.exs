@@ -29,21 +29,20 @@ defmodule Ex01 do
   
 def counter(value \\ 0) do
   receive do
- +     {:next, from} ->
- +       send from, {:next_is, value}
- +         counter(value+1)
- +end
+      {:next, from} ->
+        send from, {:next_is, value}
+          counter(value+1)
+  end	
 end
 def new_counter(value)do
- +      spawn __MODULE__, :counter, [value] 
- +  end
- +  
- +  def next_value(counter)do
- +      send counter, {:next, self}
- +    receive do
- +      {:next_is, value} -> value
- +  end
- end 
+       spawn __MODULE__, :counter, [value] 
+end
+   
+def next_value(counter)do
+       send counter, {:next, self}
+   receive do
+      {:next_is, value} -> value
+    end
 end
 
 ExUnit.start()
@@ -79,7 +78,7 @@ defmodule Test do
      assert  Ex01.next_value(count) == 5
      assert  Ex01.next_value(count) == 6
    end
-
+  end
 end
 
 

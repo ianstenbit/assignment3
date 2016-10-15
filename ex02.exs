@@ -1,20 +1,20 @@
 
 defmodule Ex02 do
   def new_counter(value\\0)do
- +   {:ok, counter} = Agent.start_link(fn -> value end)
- +    counter
- +  end
- +
- +  def next_value(counter)do
- +    Agent.get_and_update(counter, &{&1, (&1+1)})
- +  end
- +
- +  def new_global_counter(value\\0)do
- +    Agent.start_link(fn -> value end, name: __MODULE__)
- +  end
- +
- +  def global_next_value do
- +    Agent.get_and_update( __MODULE__, &{&1, (&1+1)})
+    {:ok, counter} = Agent.start_link(fn -> value end)
+     counter
+   end
+ 
+   def next_value(counter)do
+     Agent.get_and_update(counter, &{&1, (&1+1)})
+   end
+ 
+   def new_global_counter(value\\0)do
+     Agent.start_link(fn -> value end, name: __MODULE__)
+   end
+ 
+   def global_next_value do
+     Agent.get_and_update( __MODULE__, &{&1, (&1+1)})
   end
 end
 
@@ -47,13 +47,13 @@ defmodule Test do
   Replace the placeholders with your code.
   """
 
- +  test "counter using an agent" do
- +    { :ok, counter } = Agent.start_link(fn -> 0 end)
+   test "counter using an agent" do
+     { :ok, counter } = Agent.start_link(fn -> 0 end)
        value   = Agent.get_and_update(counter, &{&1, (&1+1)})
- +     assert value == 0
- +    value   = Agent.get_and_update(counter, &{&1, (&1+1)})
- +     assert value == 1
- +    end
+      assert value == 0
+     value   = Agent.get_and_update(counter, &{&1, (&1+1)})
+      assert value == 1
+     end
 
   @doc """
   Next, uncomment this test, and add code to the Ex02 module at the
